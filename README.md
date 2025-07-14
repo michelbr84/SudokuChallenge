@@ -1,6 +1,8 @@
-# Sudoku Challenge
-
-![Game Start](Assets/Sprites/start.png)
+<!-- Centered Title and Image -->
+<p align="center">
+  <h1>Sudoku Challenge</h1>
+  <img src="Assets/Sprites/start.png" alt="Game Start" />
+</p>
 
 ## Game Description
 

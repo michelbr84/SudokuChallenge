@@ -15,6 +15,9 @@ public class InputButton : MonoBehaviour
     // Reference to the last selected Sudoku cell.
     private SudokuCell lastCell;
 
+    // Pencil mode toggle
+    public static bool IsPencilMode = false;
+
     // UI GameObject to display a wrong input message.
     // Exposed in the Inspector for easy assignment.
     [SerializeField, Tooltip("UI GameObject to display wrong input message.")]
@@ -66,7 +69,14 @@ public class InputButton : MonoBehaviour
         // Check if a cell was selected before updating its value.
         if (lastCell != null)
         {
-            lastCell.UpdateValue(num);
+            if (IsPencilMode)
+            {
+                lastCell.AddOrRemovePencilMark(num);
+            }
+            else
+            {
+                lastCell.UpdateValue(num);
+            }
         }
         else
         {
@@ -85,5 +95,11 @@ public class InputButton : MonoBehaviour
 
         // Deactivate the input button UI after processing the input.
         gameObject.SetActive(false);
+    }
+
+    // Toggle Pencil mode (can be called from a UI button)
+    public void TogglePencilMode()
+    {
+        IsPencilMode = !IsPencilMode;
     }
 }

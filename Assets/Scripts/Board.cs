@@ -470,6 +470,29 @@ public class Board : MonoBehaviour
     /// </summary>
     public void CheckComplete()
     {
+        // Highlight incorrect cells
+        Transform[] blocks = new Transform[] { square00, square01, square02, square10, square11, square12, square20, square21, square22 };
+        for (int i = 0; i < 9; i++)
+        {
+            for (int j = 0; j < 9; j++)
+            {
+                foreach (var block in blocks)
+                {
+                    foreach (Transform child in block)
+                    {
+                        if (child.name == i.ToString() + j.ToString())
+                        {
+                            SudokuCell cell = child.GetComponent<SudokuCell>();
+                            if (cell != null)
+                            {
+                                bool isError = (puzzle[i, j] != 0 && puzzle[i, j] != grid[i, j]);
+                                cell.SetErrorState(isError);
+                            }
+                        }
+                    }
+                }
+            }
+        }
         if (CheckGrid())
         {
             winMenu.SetActive(true);

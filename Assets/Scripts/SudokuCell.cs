@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class SudokuCell : MonoBehaviour
+public class SudokuCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
 {
     Board board;
 
@@ -12,6 +13,9 @@ public class SudokuCell : MonoBehaviour
     int value;
     string id;
     public Text t;
+    [Header("Pencil Marks")]
+    public Text pencilText;
+    private List<int> pencilMarks = new List<int>();
 
     private RectTransform rectTransform;
 
@@ -20,9 +24,18 @@ public class SudokuCell : MonoBehaviour
     private AudioClip popSound; // <- SOM de pop
     private AudioSource audioSource; // <- Fonte de áudio
 
+    [Header("UI Colors")]
+    [SerializeField] private Color normalColor = Color.white;
+    [SerializeField] private Color hoverColor = new Color(0.85f, 0.92f, 1f);
+    [SerializeField] private Color clickColor = new Color(0.7f, 0.8f, 1f);
+    [SerializeField] private Color errorColor = Color.red;
+    private Image bgImage;
+
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
+        bgImage = GetComponent<Image>();
+        if (bgImage != null) bgImage.color = normalColor;
 
         // Adiciona automaticamente o AudioSource se não tiver
         if (GetComponent<AudioSource>() == null)
@@ -52,6 +65,10 @@ public class SudokuCell : MonoBehaviour
             t.text = " ";
         }
 
+        pencilMarks.Clear();
+        UpdatePencilDisplay();
+        SetErrorState(false);
+
         if (value != 0)
         {
             GetComponentInParent<Button>().enabled = false;
@@ -74,6 +91,8 @@ public class SudokuCell : MonoBehaviour
         if (value != 0)
         {
             t.text = value.ToString();
+            pencilMarks.Clear();
+            UpdatePencilDisplay();
         }
         else
         {
@@ -85,6 +104,31 @@ public class SudokuCell : MonoBehaviour
         if (value != 0)
         {
             StartCoroutine(PlayPopAnimation());
+        }
+        SetErrorState(false);
+    }
+
+    public void AddOrRemovePencilMark(int mark)
+    {
+        if (mark < 1 || mark > 9) return;
+        if (pencilMarks.Contains(mark))
+            pencilMarks.Remove(mark);
+        else
+            pencilMarks.Add(mark);
+        pencilMarks.Sort();
+        UpdatePencilDisplay();
+    }
+
+    private void UpdatePencilDisplay()
+    {
+        if (pencilText == null) return;
+        if (pencilMarks.Count == 0)
+        {
+            pencilText.text = "";
+        }
+        else
+        {
+            pencilText.text = string.Join(" ", pencilMarks);
         }
     }
 
@@ -122,5 +166,29 @@ public class SudokuCell : MonoBehaviour
             yield return null;
         }
         rectTransform.localScale = originalScale;
+    }
+
+    public void SetErrorState(bool isError)
+    {
+        if (t != null)
+            t.color = isError ? errorColor : new Color32(0, 102, 187, 255);
+    }
+
+    // UI Feedback
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (bgImage != null) bgImage.color = hoverColor;
+    }
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (bgImage != null) bgImage.color = normalColor;
+    }
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        if (bgImage != null) bgImage.color = clickColor;
+    }
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        if (bgImage != null) bgImage.color = hoverColor;
     }
 }
