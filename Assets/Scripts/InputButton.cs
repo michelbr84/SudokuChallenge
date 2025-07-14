@@ -17,6 +17,10 @@ public class InputButton : MonoBehaviour
 
     // Pencil mode toggle
     public static bool IsPencilMode = false;
+    [Header("Pencil Mode UI")]
+    public Button pencilModeButton;
+    [SerializeField] private Color pencilNormalColor = Color.white;
+    [SerializeField] private Color pencilActiveColor = new Color(0.7f, 0.8f, 1f);
 
     // UI GameObject to display a wrong input message.
     // Exposed in the Inspector for easy assignment.
@@ -101,5 +105,12 @@ public class InputButton : MonoBehaviour
     public void TogglePencilMode()
     {
         IsPencilMode = !IsPencilMode;
+        if (pencilModeButton != null)
+        {
+            var colors = pencilModeButton.colors;
+            colors.normalColor = IsPencilMode ? pencilActiveColor : pencilNormalColor;
+            colors.selectedColor = colors.normalColor;
+            pencilModeButton.colors = colors;
+        }
     }
 }

@@ -14,7 +14,7 @@ public class SudokuCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     string id;
     public Text t;
     [Header("Pencil Marks")]
-    public Text pencilText;
+    public Text[] pencilTexts = new Text[9]; // Assign in Inspector: Pencil1 to Pencil9
     private List<int> pencilMarks = new List<int>();
 
     private RectTransform rectTransform;
@@ -117,18 +117,18 @@ public class SudokuCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             pencilMarks.Add(mark);
         pencilMarks.Sort();
         UpdatePencilDisplay();
+        SetErrorState(false);
     }
 
     private void UpdatePencilDisplay()
     {
-        if (pencilText == null) return;
-        if (pencilMarks.Count == 0)
+        if (pencilTexts == null || pencilTexts.Length != 9) return;
+        for (int i = 0; i < 9; i++)
         {
-            pencilText.text = "";
-        }
-        else
-        {
-            pencilText.text = string.Join(" ", pencilMarks);
+            if (pencilMarks.Contains(i + 1))
+                pencilTexts[i].text = (i + 1).ToString();
+            else
+                pencilTexts[i].text = "";
         }
     }
 
