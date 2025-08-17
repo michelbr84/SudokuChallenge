@@ -54,9 +54,7 @@ public class Board : MonoBehaviour
     [SerializeField, Tooltip("UI element to display a lose message")]
     private GameObject loseText;
 
-    // Optional UI text to display current and best times on win
-    [SerializeField, Tooltip("Optional Text to display current and best times on win")]
-    private Text bestTimeText;
+    
 
     // Hint limits and UI
     [SerializeField, Tooltip("Maximum number of hints per game")] private int maxHints = 3;

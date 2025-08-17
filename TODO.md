@@ -33,6 +33,7 @@
 - [x] Performance & code health
   - [x] Cache `SudokuCell[,]` in `Board` and refactor `GiveHint()`/`CheckComplete()` to use it instead of name lookups
   - [x] Optimize solver: break upon first empty cell per recursion to reduce branching
+  - [x] Fix compile error: removed duplicate `bestTimeText` field in `Board`
 - [x] Releases & CI
   - [x] Add root `.gitignore` to ignore `Library/`, `Temp/`, `Builds/`, etc.
 - [x] Gameplay quality & performance
