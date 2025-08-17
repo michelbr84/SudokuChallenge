@@ -97,6 +97,7 @@ public class SudokuCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public void UpdateValue(int newValue)
     {
+        int previous = value;
         value = newValue;
 
         if (value != 0)
@@ -111,6 +112,7 @@ public class SudokuCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
 
         board.UpdatePuzzle(row, col, value);
+        board.RecordValueMove(row, col, previous, value);
 
         if (value != 0)
         {

@@ -41,6 +41,7 @@
 - [x] Feature depth
   - [x] Best times per difficulty (PlayerPrefs) and display on win screen
   - [x] Limit and track number of hints per game; display remaining hints in UI
+  - [x] Undo/redo stack for value entries (`Board.Undo()` / `Board.Redo()` with value history)
 - [x] UX polish (partial)
   - [x] Add TMP support in code (`SudokuCell` and `TimerCountUp` support `TMP_Text`)
 
@@ -49,7 +50,7 @@
 - [ ] UX polish
   - [ ] Migrate UI text to TextMeshPro for sharper rendering (update prefabs to assign `TMP_Text` fields in cells and timer)
 - [ ] Feature depth
-  - [ ] Undo/redo stack for moves (values and pencil marks)
+  - [ ] Undo/redo for pencil marks (extend history to include note changes)
 - [ ] Android polish
   - [ ] Respect safe area and ensure touch targets ~48dp for number/pencil buttons
   - [ ] Sound/haptics: option to toggle; light haptics for correct/incorrect

@@ -19,6 +19,18 @@ public class Board : MonoBehaviour
     // Cached references to instantiated SudokuCell components for fast lookup.
     private SudokuCell[,] cells = new SudokuCell[9, 9];
 
+    // Undo/Redo support for value changes
+    private struct ValueMove
+    {
+        public int row;
+        public int col;
+        public int previousValue;
+        public int newValue;
+    }
+    private readonly Stack<ValueMove> undoStack = new Stack<ValueMove>();
+    private readonly Stack<ValueMove> redoStack = new Stack<ValueMove>();
+    private bool isApplyingUndoRedo = false;
+
     // Number of cells to remove based on difficulty. It is set from PlayerSettings.
     private int difficulty = 15;
 
@@ -458,6 +470,42 @@ public class Board : MonoBehaviour
     public void UpdatePuzzle(int row, int col, int value)
     {
         puzzle[row, col] = value;
+    }
+
+    // Called by SudokuCell before changing the value to record the move
+    public void RecordValueMove(int row, int col, int previousValue, int newValue)
+    {
+        if (isApplyingUndoRedo) return;
+        if (previousValue == newValue) return;
+        undoStack.Push(new ValueMove { row = row, col = col, previousValue = previousValue, newValue = newValue });
+        redoStack.Clear();
+    }
+
+    public void Undo()
+    {
+        if (undoStack.Count == 0) return;
+        ValueMove move = undoStack.Pop();
+        redoStack.Push(move);
+        ApplyValue(move.row, move.col, move.previousValue);
+    }
+
+    public void Redo()
+    {
+        if (redoStack.Count == 0) return;
+        ValueMove move = redoStack.Pop();
+        undoStack.Push(move);
+        ApplyValue(move.row, move.col, move.newValue);
+    }
+
+    private void ApplyValue(int row, int col, int value)
+    {
+        isApplyingUndoRedo = true;
+        SudokuCell cell = cells[row, col];
+        if (cell != null)
+        {
+            cell.UpdateValue(value);
+        }
+        isApplyingUndoRedo = false;
     }
 
     /// <summary>
