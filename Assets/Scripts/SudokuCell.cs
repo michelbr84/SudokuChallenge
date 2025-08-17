@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using UnityEngine.EventSystems;
 
 public class SudokuCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
@@ -13,8 +14,10 @@ public class SudokuCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     int value;
     string id;
     public Text t;
+    [SerializeField] private TMP_Text tTMP;
     [Header("Pencil Marks")]
     public Text[] pencilTexts = new Text[9]; // Assign in Inspector: Pencil1 to Pencil9
+    [SerializeField] private TMP_Text[] pencilTMPTexts = new TMP_Text[9];
     private List<int> pencilMarks = new List<int>();
 
     private RectTransform rectTransform;
@@ -29,6 +32,7 @@ public class SudokuCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     [SerializeField] private Color hoverColor = new Color(0.85f, 0.92f, 1f);
     [SerializeField] private Color clickColor = new Color(0.7f, 0.8f, 1f);
     [SerializeField] private Color errorColor = Color.red;
+    [SerializeField] private Color entryColor = new Color32(0, 102, 187, 255);
     private Image bgImage;
 
     private void Awake()
@@ -58,11 +62,11 @@ public class SudokuCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
         if (value != 0)
         {
-            t.text = value.ToString();
+            SetMainText(value.ToString());
         }
         else
         {
-            t.text = " ";
+            SetMainText(" ");
         }
 
         pencilMarks.Clear();
@@ -75,7 +79,7 @@ public class SudokuCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else
         {
-            t.color = new Color32(0, 102, 187, 255);
+            SetMainColor(entryColor);
         }
     }
 
@@ -90,13 +94,13 @@ public class SudokuCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
         if (value != 0)
         {
-            t.text = value.ToString();
+            SetMainText(value.ToString());
             pencilMarks.Clear();
             UpdatePencilDisplay();
         }
         else
         {
-            t.text = "";
+            SetMainText("");
         }
 
         board.UpdatePuzzle(row, col, value);
@@ -122,13 +126,17 @@ public class SudokuCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     private void UpdatePencilDisplay()
     {
-        if (pencilTexts == null || pencilTexts.Length != 9) return;
         for (int i = 0; i < 9; i++)
         {
-            if (pencilMarks.Contains(i + 1))
-                pencilTexts[i].text = (i + 1).ToString();
-            else
-                pencilTexts[i].text = "";
+            string s = pencilMarks.Contains(i + 1) ? (i + 1).ToString() : "";
+            if (pencilTexts != null && pencilTexts.Length == 9 && pencilTexts[i] != null)
+            {
+                pencilTexts[i].text = s;
+            }
+            if (pencilTMPTexts != null && pencilTMPTexts.Length == 9 && pencilTMPTexts[i] != null)
+            {
+                pencilTMPTexts[i].text = s;
+            }
         }
     }
 
@@ -170,8 +178,7 @@ public class SudokuCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public void SetErrorState(bool isError)
     {
-        if (t != null)
-            t.color = isError ? errorColor : new Color32(0, 102, 187, 255);
+        SetMainColor(isError ? errorColor : entryColor);
     }
 
     // UI Feedback
@@ -190,5 +197,18 @@ public class SudokuCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public void OnPointerUp(PointerEventData eventData)
     {
         if (bgImage != null) bgImage.color = hoverColor;
+    }
+
+    // Helpers to support both Text and TMP_Text
+    private void SetMainText(string s)
+    {
+        if (t != null) t.text = s;
+        if (tTMP != null) tTMP.text = s;
+    }
+
+    private void SetMainColor(Color c)
+    {
+        if (t != null) t.color = c;
+        if (tTMP != null) tTMP.color = c;
     }
 }

@@ -34,11 +34,13 @@
   - [x] Add root `.gitignore` to ignore `Library/`, `Temp/`, `Builds/`, etc.
 - [x] Gameplay quality & performance
   - [x] Improve puzzle generation to preserve unique solution (solution counting during removals)
+- [x] UX polish (partial)
+  - [x] Add TMP support in code (`SudokuCell` supports `TMP_Text` for main and pencil marks)
 
 ## Pending / Next Up
 
 - [ ] UX polish
-  - [ ] Migrate UI text to TextMeshPro for sharper rendering
+  - [ ] Migrate UI text to TextMeshPro for sharper rendering (update prefabs to assign `TMP_Text` fields)
   - [ ] Hide/dim pencil marks when a main value is set; re-show when cleared
   - [ ] Add quick actions: "Clear cell" and "Clear notes" buttons
   - [ ] Add subtle animations (e.g., shake on error)
