@@ -40,6 +40,8 @@
   - [x] Best times per difficulty (PlayerPrefs) and display on win screen
 - [x] UX polish (partial)
   - [x] Add TMP support in code (`SudokuCell` supports `TMP_Text` for main and pencil marks)
+- [x] Android polish
+  - [x] Handle Android back button (pause/confirm quit) via `PauseManager`
 
 ## Pending / Next Up
 
@@ -50,7 +52,6 @@
   - [ ] Limit and track number of hints per game; display remaining hints in UI
   - [ ] Undo/redo stack for moves (values and pencil marks)
 - [ ] Android polish
-  - [ ] Handle Android back button (pause/confirm quit)
   - [ ] Respect safe area and ensure touch targets ~48dp for number/pencil buttons
   - [ ] Sound/haptics: option to toggle; light haptics for correct/incorrect
 - [ ] Accessibility
