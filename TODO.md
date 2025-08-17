@@ -32,11 +32,11 @@
   - [x] Optimize solver: break upon first empty cell per recursion to reduce branching
 - [x] Releases & CI
   - [x] Add root `.gitignore` to ignore `Library/`, `Temp/`, `Builds/`, etc.
+- [x] Gameplay quality & performance
+  - [x] Improve puzzle generation to preserve unique solution (solution counting during removals)
 
 ## Pending / Next Up
 
-- [ ] Gameplay quality & performance
-  - [ ] Improve puzzle generation: ensure (or increase likelihood of) unique solutions; remove one cell at a time with uniqueness check
 - [ ] UX polish
   - [ ] Migrate UI text to TextMeshPro for sharper rendering
   - [ ] Hide/dim pencil marks when a main value is set; re-show when cleared

@@ -313,51 +313,33 @@ public class Board : MonoBehaviour
         // Copy the solved grid to the puzzle.
         System.Array.Copy(grid, puzzle, grid.Length);
 
-        // Remove cells randomly based on difficulty.
-        for (int i = 0; i < difficulty; i++)
+        // Remove cells while preserving uniqueness of the solution
+        int removed = 0;
+        int attempts = 0;
+        const int maxAttempts = 2000;
+        while (removed < difficulty && attempts < maxAttempts)
         {
+            attempts++;
             int row = Random.Range(0, 9);
             int col = Random.Range(0, 9);
 
-            // Ensure we only remove cells that have not been removed yet.
-            while (puzzle[row, col] == 0)
+            if (puzzle[row, col] == 0)
             {
-                row = Random.Range(0, 9);
-                col = Random.Range(0, 9);
+                continue; // already empty
             }
+
+            int backup = puzzle[row, col];
             puzzle[row, col] = 0;
-        }
 
-        // Ensure the puzzle has at least 8 different numbers on the board.
-        // This loop adjusts the puzzle to help guarantee a unique solution.
-        List<int> onBoard = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-        RandomizeList(onBoard);
-
-        for (int i = 0; i < 9; i++)
-        {
-            for (int j = 0; j < 9; j++)
+            // Check uniqueness on a copy of the puzzle
+            if (HasUniqueSolution(puzzle))
             {
-                // Remove found numbers from the list.
-                for (int k = 0; k < onBoard.Count - 1; k++)
-                {
-                    if (onBoard[k] == puzzle[i, j])
-                    {
-                        onBoard.RemoveAt(k);
-                    }
-                }
+                removed++;
             }
-        }
-
-        // Reinstate at least one occurrence of remaining numbers if necessary.
-        while (onBoard.Count - 1 > 1)
-        {
-            int row = Random.Range(0, 9);
-            int col = Random.Range(0, 9);
-
-            if (grid[row, col] == onBoard[0])
+            else
             {
-                puzzle[row, col] = grid[row, col];
-                onBoard.RemoveAt(0);
+                // Revert if multiple solutions
+                puzzle[row, col] = backup;
             }
         }
 
@@ -521,6 +503,102 @@ public class Board : MonoBehaviour
             }
         }
         return true;
+    }
+
+    // ==== Uniqueness checking helpers (operate on provided grid) ====
+    private bool HasUniqueSolution(int[,] source)
+    {
+        int[,] work = new int[9, 9];
+        System.Array.Copy(source, work, source.Length);
+        int solutions = 0;
+        CountSolutions(work, ref solutions);
+        return solutions == 1;
+    }
+
+    private void CountSolutions(int[,] work, ref int solutions)
+    {
+        if (solutions > 1)
+        {
+            return; // early exit if more than one found
+        }
+
+        if (!FindEmptyCell(work, out int row, out int col))
+        {
+            solutions++;
+            return;
+        }
+
+        for (int candidate = 1; candidate <= 9; candidate++)
+        {
+            if (IsSafeInGrid(work, row, col, candidate))
+            {
+                work[row, col] = candidate;
+                CountSolutions(work, ref solutions);
+                work[row, col] = 0;
+                if (solutions > 1)
+                {
+                    return;
+                }
+            }
+        }
+    }
+
+    private bool FindEmptyCell(int[,] work, out int row, out int col)
+    {
+        for (int i = 0; i < 9; i++)
+        {
+            for (int j = 0; j < 9; j++)
+            {
+                if (work[i, j] == 0)
+                {
+                    row = i;
+                    col = j;
+                    return true;
+                }
+            }
+        }
+        row = -1;
+        col = -1;
+        return false;
+    }
+
+    private bool IsSafeInGrid(int[,] work, int row, int col, int value)
+    {
+        return !RowHasValue(work, row, value)
+            && !ColumnHasValue(work, col, value)
+            && !SquareHasValue(work, row, col, value);
+    }
+
+    private bool RowHasValue(int[,] work, int row, int value)
+    {
+        for (int j = 0; j < 9; j++)
+        {
+            if (work[row, j] == value) return true;
+        }
+        return false;
+    }
+
+    private bool ColumnHasValue(int[,] work, int col, int value)
+    {
+        for (int i = 0; i < 9; i++)
+        {
+            if (work[i, col] == value) return true;
+        }
+        return false;
+    }
+
+    private bool SquareHasValue(int[,] work, int row, int col, int value)
+    {
+        int startRow = (row / 3) * 3;
+        int startCol = (col / 3) * 3;
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                if (work[startRow + i, startCol + j] == value) return true;
+            }
+        }
+        return false;
     }
 
     /// <summary>
