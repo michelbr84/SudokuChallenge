@@ -18,6 +18,7 @@ public class SudokuCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     [Header("Pencil Marks")]
     public Text[] pencilTexts = new Text[9]; // Assign in Inspector: Pencil1 to Pencil9
     [SerializeField] private TMP_Text[] pencilTMPTexts = new TMP_Text[9];
+    [SerializeField] private GameObject pencilContainer; // Parent object that holds the 3x3 pencil grid
     private List<int> pencilMarks = new List<int>();
 
     private RectTransform rectTransform;
@@ -72,6 +73,7 @@ public class SudokuCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         pencilMarks.Clear();
         UpdatePencilDisplay();
         SetErrorState(false);
+        UpdatePencilVisibility();
 
         if (value != 0)
         {
@@ -110,6 +112,7 @@ public class SudokuCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             StartCoroutine(PlayPopAnimation());
         }
         SetErrorState(false);
+        UpdatePencilVisibility();
     }
 
     public void AddOrRemovePencilMark(int mark)
@@ -122,6 +125,23 @@ public class SudokuCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         pencilMarks.Sort();
         UpdatePencilDisplay();
         SetErrorState(false);
+    }
+
+    public void ClearPencilMarks()
+    {
+        pencilMarks.Clear();
+        UpdatePencilDisplay();
+        SetErrorState(false);
+    }
+
+    public void ClearCell()
+    {
+        // Only allow clearing if the cell was not a prefilled puzzle value (button enabled indicates editable)
+        Button parentButton = GetComponentInParent<Button>();
+        if (parentButton != null && parentButton.enabled)
+        {
+            UpdateValue(0);
+        }
     }
 
     private void UpdatePencilDisplay()
@@ -210,5 +230,13 @@ public class SudokuCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     {
         if (t != null) t.color = c;
         if (tTMP != null) tTMP.color = c;
+    }
+
+    private void UpdatePencilVisibility()
+    {
+        if (pencilContainer == null) return;
+        // Hide notes when a main value is set; show when empty
+        bool hasMain = value != 0;
+        pencilContainer.SetActive(!hasMain);
     }
 }
