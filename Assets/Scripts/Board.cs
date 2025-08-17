@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
+// using UnityEngine.UIElements; // Unused
 
 /// <summary>
 /// Board class manages the generation and functionality of the Sudoku board,
@@ -15,6 +15,9 @@ public class Board : MonoBehaviour
 
     // The puzzle grid with some cells removed according to difficulty.
     private int[,] puzzle = new int[9, 9];
+
+    // Cached references to instantiated SudokuCell components for fast lookup.
+    private SudokuCell[,] cells = new SudokuCell[9, 9];
 
     // Number of cells to remove based on difficulty. It is set from PlayerSettings.
     private int difficulty = 15;
@@ -402,6 +405,9 @@ public class Board : MonoBehaviour
                 // Initialize the cell with its position, value from the puzzle, and a string id.
                 sudokuCell.SetValues(i, j, puzzle[i, j], i + "," + j, this);
 
+                // Cache the reference for O(1) access later
+                cells[i, j] = sudokuCell;
+
                 // Name the GameObject based on its grid position.
                 newButton.name = i.ToString() + j.ToString();
 
@@ -470,26 +476,16 @@ public class Board : MonoBehaviour
     /// </summary>
     public void CheckComplete()
     {
-        // Highlight incorrect cells
-        Transform[] blocks = new Transform[] { square00, square01, square02, square10, square11, square12, square20, square21, square22 };
+        // Highlight incorrect cells using cached references
         for (int i = 0; i < 9; i++)
         {
             for (int j = 0; j < 9; j++)
             {
-                foreach (var block in blocks)
+                SudokuCell cell = cells[i, j];
+                if (cell != null)
                 {
-                    foreach (Transform child in block)
-                    {
-                        if (child.name == i.ToString() + j.ToString())
-                        {
-                            SudokuCell cell = child.GetComponent<SudokuCell>();
-                            if (cell != null)
-                            {
-                                bool isError = (puzzle[i, j] != 0 && puzzle[i, j] != grid[i, j]);
-                                cell.SetErrorState(isError);
-                            }
-                        }
-                    }
+                    bool isError = (puzzle[i, j] != 0 && puzzle[i, j] != grid[i, j]);
+                    cell.SetErrorState(isError);
                 }
             }
         }
@@ -549,29 +545,13 @@ public class Board : MonoBehaviour
         if (emptyCells.Count == 0)
             return; // No empty cells left
 
-        // Pick a random empty cell
+        // Pick a random empty cell and fill with the correct value
         var (row, col) = emptyCells[Random.Range(0, emptyCells.Count)];
         int correctValue = grid[row, col];
-
-        // Find the corresponding SudokuCell and update it
-        // Search all 3x3 block parents for the cell
-        Transform[] blocks = new Transform[] { square00, square01, square02, square10, square11, square12, square20, square21, square22 };
-        foreach (var block in blocks)
+        SudokuCell targetCell = cells[row, col];
+        if (targetCell != null)
         {
-            foreach (Transform child in block)
-            {
-                SudokuCell cell = child.GetComponent<SudokuCell>();
-                if (cell != null)
-                {
-                    // Use reflection or add a public method/property to SudokuCell to get row/col
-                    // For now, use the name (set in CreateButtons) as "ij"
-                    if (child.name == row.ToString() + col.ToString())
-                    {
-                        cell.UpdateValue(correctValue);
-                        return;
-                    }
-                }
-            }
+            targetCell.UpdateValue(correctValue);
         }
     }
 }

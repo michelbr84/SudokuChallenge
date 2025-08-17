@@ -1,0 +1,68 @@
+# TODO
+
+## Completed
+
+- [x] Core gameplay
+  - [x] Complete Sudoku grid generation and backtracking solver
+  - [x] Puzzle creation based on difficulty (cells removed)
+  - [x] Board instantiation with 3×3 blocks and `SudokuCell_Prefab`
+  - [x] Input flow via `InputButton` and `SudokuCell`
+- [x] Player features
+  - [x] Pencil Mode (toggle): add/remove candidates per cell
+  - [x] Pencil marks displayed in a 3×3 grid inside each cell
+  - [x] Hint system: fills a correct value in a random empty cell
+- [x] Feedback & UX
+  - [x] Error highlighting per cell on Submit (red for incorrect)
+  - [x] Auto-clear error highlight when value or notes change
+  - [x] Hover/click visual feedback for cells
+  - [x] Pop animation + sound on successful entry
+  - [x] Pencil Mode button visual state (active/inactive)
+- [x] UI & Controls
+  - [x] Difficulty slider wired to `PlayerSettings`
+  - [x] Timer (count up)
+- [x] Documentation
+  - [x] README centered title + image
+  - [x] README features, installation, credits (Developed by Michel Duek)
+- [x] Builds & Repo
+  - [x] Android APK build (`Sudoku/Game/Sudoku.apk`)
+  - [x] GitHub repository updated and pushed
+- [x] Performance & code health
+  - [x] Cache `SudokuCell[,]` in `Board` and refactor `GiveHint()`/`CheckComplete()` to use it instead of name lookups
+
+## Pending / Next Up
+
+- [ ] Gameplay quality & performance
+  - [ ] Optimize solver: stop scanning after first empty cell per recursion (break loops) to reduce branching
+  - [ ] Improve puzzle generation: ensure (or increase likelihood of) unique solutions; remove one cell at a time with uniqueness check
+- [ ] UX polish
+  - [ ] Migrate UI text to TextMeshPro for sharper rendering
+  - [ ] Hide/dim pencil marks when a main value is set; re-show when cleared
+  - [ ] Add quick actions: "Clear cell" and "Clear notes" buttons
+  - [ ] Add a "Clear errors" button to reset highlights without rechecking
+  - [ ] Add subtle animations (e.g., shake on error)
+- [ ] Feature depth
+  - [ ] Limit and track number of hints per game; display remaining hints in UI
+  - [ ] Best times per difficulty (persist with `PlayerPrefs`); show on win screen and main menu
+  - [ ] Undo/redo stack for moves (values and pencil marks)
+- [ ] Android polish
+  - [ ] Handle Android back button (pause/confirm quit)
+  - [ ] Respect safe area and ensure touch targets ~48dp for number/pencil buttons
+  - [ ] Sound/haptics: option to toggle; light haptics for correct/incorrect
+- [ ] Accessibility
+  - [ ] Colorblind-friendly palette option; adjustable contrast for error/hover states
+  - [ ] Option to increase font sizes
+- [ ] Code quality
+  - [ ] Remove unused imports (e.g., `UnityEngine.UIElements` in `Board`)
+  - [ ] Avoid reliance on child GameObject names; expose `row`/`col` via properties if needed
+  - [ ] Organize scripts into namespaces and folders (Gameplay, UI, Systems)
+- [ ] Documentation & assets
+  - [ ] Add screenshots/GIFs to README (gameplay, menus, pencil mode)
+  - [ ] "How to Play" section in-game (brief tutorial or help panel)
+  - [ ] Contribution guidelines in repo (CONTRIBUTING.md)
+- [ ] Releases & CI
+  - [ ] Create a GitHub release (tag e.g., `v1.0.0`) and upload `Sudoku.apk` to Releases page (if not yet done)
+  - [ ] Add root `.gitignore` to ignore `Library/`, `Temp/`, `Builds/`, etc. (the previous `SudokuChallenge/.gitignore` was removed)
+  - [ ] Optional: CI workflow to build and validate (e.g., GitHub Actions)
+- [ ] Testing
+  - [ ] Unit tests for solver, puzzle validator, and hint logic
+  - [ ] Playtesting checklist across devices/screen sizes
