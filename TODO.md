@@ -20,6 +20,7 @@
   - [x] Clear errors support via `Board.ClearErrors()` (hook to UI button)
   - [x] Hide pencil marks when a main value is set; show when cleared (via `pencilContainer`)
   - [x] Quick actions: `ClearPencilMarks()` and `ClearCell()` in `SudokuCell`
+  - [x] Subtle animation: shake on error in `SudokuCell`
 - [x] UI & Controls
   - [x] Difficulty slider wired to `PlayerSettings`
   - [x] Timer (count up)
@@ -40,14 +41,11 @@
   - [x] Best times per difficulty (PlayerPrefs) and display on win screen
 - [x] UX polish (partial)
   - [x] Add TMP support in code (`SudokuCell` supports `TMP_Text` for main and pencil marks)
-- [x] Android polish
-  - [x] Handle Android back button (pause/confirm quit) via `PauseManager`
 
 ## Pending / Next Up
 
 - [ ] UX polish
   - [ ] Migrate UI text to TextMeshPro for sharper rendering (update prefabs to assign `TMP_Text` fields)
-  - [ ] Add subtle animations (e.g., shake on error)
 - [ ] Feature depth
   - [ ] Limit and track number of hints per game; display remaining hints in UI
   - [ ] Undo/redo stack for moves (values and pencil marks)

@@ -36,6 +36,11 @@ public class SudokuCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     [SerializeField] private Color entryColor = new Color32(0, 102, 187, 255);
     private Image bgImage;
 
+    [Header("Error Animation")]
+    [SerializeField] private bool enableErrorShake = true;
+    [SerializeField, Range(0.05f, 0.5f)] private float shakeDuration = 0.15f;
+    [SerializeField, Range(1f, 20f)] private float shakeMagnitude = 6f;
+
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
@@ -199,6 +204,11 @@ public class SudokuCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public void SetErrorState(bool isError)
     {
         SetMainColor(isError ? errorColor : entryColor);
+        if (isError && enableErrorShake)
+        {
+            StopAllCoroutines();
+            StartCoroutine(ShakeCoroutine());
+        }
     }
 
     // UI Feedback
@@ -238,5 +248,20 @@ public class SudokuCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         // Hide notes when a main value is set; show when empty
         bool hasMain = value != 0;
         pencilContainer.SetActive(!hasMain);
+    }
+
+    private System.Collections.IEnumerator ShakeCoroutine()
+    {
+        Vector3 originalPos = rectTransform.localPosition;
+        float elapsed = 0f;
+        while (elapsed < shakeDuration)
+        {
+            float x = Random.Range(-1f, 1f) * shakeMagnitude;
+            float y = Random.Range(-1f, 1f) * (shakeMagnitude * 0.5f);
+            rectTransform.localPosition = originalPos + new Vector3(x, y, 0f);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        rectTransform.localPosition = originalPos;
     }
 }
