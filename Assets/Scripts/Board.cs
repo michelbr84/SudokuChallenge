@@ -54,6 +54,10 @@ public class Board : MonoBehaviour
     [SerializeField, Tooltip("UI element to display a lose message")]
     private GameObject loseText;
 
+    // Optional UI text to display current and best times on win
+    [SerializeField, Tooltip("Optional Text to display current and best times on win")]
+    private Text bestTimeText;
+
     /// <summary>
     /// Start is called before the first frame update.
     /// Initializes the board, sets difficulty from PlayerSettings, and creates the grid, puzzle, and buttons.
@@ -472,6 +476,17 @@ public class Board : MonoBehaviour
         if (CheckGrid())
         {
             winMenu.SetActive(true);
+
+            // Save best time per difficulty and update UI if available
+            float elapsed = Time.timeSinceLevelLoad;
+            BestTimeManager.SaveIfBest(PlayerSettings.difficulty, elapsed);
+            if (bestTimeText != null)
+            {
+                float? best = BestTimeManager.GetBestSeconds(PlayerSettings.difficulty);
+                string currentStr = BestTimeManager.FormatTime(elapsed);
+                string bestStr = best.HasValue ? BestTimeManager.FormatTime(best.Value) : "--:--";
+                bestTimeText.text = $"Time: {currentStr}\nBest: {bestStr}";
+            }
         }
         else
         {

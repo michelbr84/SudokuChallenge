@@ -36,6 +36,8 @@
   - [x] Add root `.gitignore` to ignore `Library/`, `Temp/`, `Builds/`, etc.
 - [x] Gameplay quality & performance
   - [x] Improve puzzle generation to preserve unique solution (solution counting during removals)
+- [x] Feature depth
+  - [x] Best times per difficulty (PlayerPrefs) and display on win screen
 - [x] UX polish (partial)
   - [x] Add TMP support in code (`SudokuCell` supports `TMP_Text` for main and pencil marks)
 
@@ -46,7 +48,6 @@
   - [ ] Add subtle animations (e.g., shake on error)
 - [ ] Feature depth
   - [ ] Limit and track number of hints per game; display remaining hints in UI
-  - [ ] Best times per difficulty (persist with `PlayerPrefs`); show on win screen and main menu
   - [ ] Undo/redo stack for moves (values and pencil marks)
 - [ ] Android polish
   - [ ] Handle Android back button (pause/confirm quit)
