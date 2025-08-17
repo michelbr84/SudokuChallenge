@@ -28,11 +28,11 @@
   - [x] GitHub repository updated and pushed
 - [x] Performance & code health
   - [x] Cache `SudokuCell[,]` in `Board` and refactor `GiveHint()`/`CheckComplete()` to use it instead of name lookups
+  - [x] Optimize solver: break upon first empty cell per recursion to reduce branching
 
 ## Pending / Next Up
 
 - [ ] Gameplay quality & performance
-  - [ ] Optimize solver: stop scanning after first empty cell per recursion (break loops) to reduce branching
   - [ ] Improve puzzle generation: ensure (or increase likelihood of) unique solutions; remove one cell at a time with uniqueness check
 - [ ] UX polish
   - [ ] Migrate UI text to TextMeshPro for sharper rendering

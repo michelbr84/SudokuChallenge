@@ -264,17 +264,12 @@ public class Board : MonoBehaviour
     /// <returns>True if the grid is solved, otherwise false.</returns>
     private bool SolveSudoku()
     {
-        int row = 0;
-        int col = 0;
+        int row = -1;
+        int col = -1;
 
-        // If the grid is completely filled, the puzzle is solved.
-        if (IsValid())
-        {
-            return true;
-        }
-
-        // Find the next empty cell.
-        for (int i = 0; i < 9; i++)
+        // Find the first empty cell; if none, puzzle is solved
+        bool foundEmpty = false;
+        for (int i = 0; i < 9 && !foundEmpty; i++)
         {
             for (int j = 0; j < 9; j++)
             {
@@ -282,26 +277,29 @@ public class Board : MonoBehaviour
                 {
                     row = i;
                     col = j;
+                    foundEmpty = true;
+                    break;
                 }
             }
         }
+        if (!foundEmpty)
+        {
+            return true;
+        }
 
         // Try numbers 1 through 9 in the empty cell.
-        for (int i = 1; i <= 9; i++)
+        for (int candidate = 1; candidate <= 9; candidate++)
         {
-            if (CheckAll(row, col, i))
+            if (CheckAll(row, col, candidate))
             {
-                grid[row, col] = i;
+                grid[row, col] = candidate;
                 // Recursively attempt to solve the rest of the grid.
                 if (SolveSudoku())
                 {
                     return true;
                 }
-                else
-                {
-                    // Reset the cell if the current number doesn't lead to a solution.
-                    grid[row, col] = 0;
-                }
+                // Reset the cell if the current number doesn't lead to a solution.
+                grid[row, col] = 0;
             }
         }
         return false;
