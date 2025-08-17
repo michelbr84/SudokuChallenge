@@ -58,6 +58,15 @@ public class Board : MonoBehaviour
     [SerializeField, Tooltip("Optional Text to display current and best times on win")]
     private Text bestTimeText;
 
+    // Hint limits and UI
+    [SerializeField, Tooltip("Maximum number of hints per game")] private int maxHints = 3;
+    private int hintsUsed = 0;
+    [SerializeField, Tooltip("Optional Text to display remaining hints")] private Text hintsText;
+
+    // Optional UI text to display current and best times on win
+    [SerializeField, Tooltip("Optional Text to display current and best times on win")]
+    private Text bestTimeText;
+
     /// <summary>
     /// Start is called before the first frame update.
     /// Initializes the board, sets difficulty from PlayerSettings, and creates the grid, puzzle, and buttons.
@@ -621,6 +630,12 @@ public class Board : MonoBehaviour
     /// </summary>
     public void GiveHint()
     {
+        // Enforce hint limits
+        if (hintsUsed >= maxHints)
+        {
+            return;
+        }
+
         // Find all empty cells
         List<(int, int)> emptyCells = new List<(int, int)>();
         for (int i = 0; i < 9; i++)
@@ -643,7 +658,16 @@ public class Board : MonoBehaviour
         if (targetCell != null)
         {
             targetCell.UpdateValue(correctValue);
+            hintsUsed++;
+            UpdateHintsUI();
         }
+    }
+
+    private void UpdateHintsUI()
+    {
+        if (hintsText == null) return;
+        int remaining = Mathf.Max(0, maxHints - hintsUsed);
+        hintsText.text = $"Hints: {remaining}/{maxHints}";
     }
 
     /// <summary>

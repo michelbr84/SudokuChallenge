@@ -39,6 +39,7 @@
   - [x] Improve puzzle generation to preserve unique solution (solution counting during removals)
 - [x] Feature depth
   - [x] Best times per difficulty (PlayerPrefs) and display on win screen
+  - [x] Limit and track number of hints per game; display remaining hints in UI
 - [x] UX polish (partial)
   - [x] Add TMP support in code (`SudokuCell` supports `TMP_Text` for main and pencil marks)
 
@@ -47,7 +48,6 @@
 - [ ] UX polish
   - [ ] Migrate UI text to TextMeshPro for sharper rendering (update prefabs to assign `TMP_Text` fields)
 - [ ] Feature depth
-  - [ ] Limit and track number of hints per game; display remaining hints in UI
   - [ ] Undo/redo stack for moves (values and pencil marks)
 - [ ] Android polish
   - [ ] Respect safe area and ensure touch targets ~48dp for number/pencil buttons
