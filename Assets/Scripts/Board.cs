@@ -552,4 +552,27 @@ public class Board : MonoBehaviour
             targetCell.UpdateValue(correctValue);
         }
     }
+
+    /// <summary>
+    /// Clears error highlights from all cells and hides the lose message.
+    /// Hook this to a UI button to let players reset error colors without rechecking.
+    /// </summary>
+    public void ClearErrors()
+    {
+        for (int i = 0; i < 9; i++)
+        {
+            for (int j = 0; j < 9; j++)
+            {
+                SudokuCell cell = cells[i, j];
+                if (cell != null)
+                {
+                    cell.SetErrorState(false);
+                }
+            }
+        }
+        if (loseText != null)
+        {
+            loseText.SetActive(false);
+        }
+    }
 }

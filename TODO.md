@@ -17,6 +17,7 @@
   - [x] Hover/click visual feedback for cells
   - [x] Pop animation + sound on successful entry
   - [x] Pencil Mode button visual state (active/inactive)
+  - [x] Clear errors support via `Board.ClearErrors()` (hook to UI button)
 - [x] UI & Controls
   - [x] Difficulty slider wired to `PlayerSettings`
   - [x] Timer (count up)
@@ -40,7 +41,6 @@
   - [ ] Migrate UI text to TextMeshPro for sharper rendering
   - [ ] Hide/dim pencil marks when a main value is set; re-show when cleared
   - [ ] Add quick actions: "Clear cell" and "Clear notes" buttons
-  - [ ] Add a "Clear errors" button to reset highlights without rechecking
   - [ ] Add subtle animations (e.g., shake on error)
 - [ ] Feature depth
   - [ ] Limit and track number of hints per game; display remaining hints in UI
