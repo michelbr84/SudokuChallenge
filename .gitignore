@@ -1,57 +1,49 @@
-# Unity generated folders
+# Unity
 [Ll]ibrary/
 [Tt]emp/
 [Oo]bj/
 [Bb]uild/
 [Bb]uilds/
 [Ll]ogs/
+[Uu]ser[Ss]ettings/
 [Mm]emoryCaptures/
+[Rr]ecordings/
+
+# Cache
 [Bb]urstCache/
 ShaderCache/
 Search/
-UserSettings/
-.collab/
-BuildPlayerData/
-ProjectSettings/
 
-# Asset meta data should only be ignored when the corresponding asset is also ignored
-!/[Aa]ssets/**/*.meta
-
-# Addressables cache
-[Aa]ssets/AddressableAssetsData/*/*.bin
-
-# IDE files
-.vscode/
-.idea/
+# Auto-generated
 *.csproj
-*.unityproj
 *.sln
 *.suo
-*.tmp
 *.user
 *.userprefs
 *.pidb
-*.booproj
-*.svd
 *.pdb
 *.mdb
 *.opendb
 *.VC.db
-*.pidb.meta
-*.pdb.meta
-*.mdb.meta
+
+# IDE
+.vs/
+.vscode/
+.idea/
 *.sln.iml
 
-# Crash reports
-sysinfo.txt
-crashlytics-build.properties
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
 
-# Builds
+# Builds & packages
 *.apk
 *.aab
 *.unitypackage
 
-# OS specific
-.DS_Store
-Thumbs.db
-Desktop.ini
+# Gradle
+.gradle/
+
+# Addressables
+[Aa]ssets/AddressableAssetsData/*/*.bin

@@ -29,6 +29,8 @@
 - [x] Performance & code health
   - [x] Cache `SudokuCell[,]` in `Board` and refactor `GiveHint()`/`CheckComplete()` to use it instead of name lookups
   - [x] Optimize solver: break upon first empty cell per recursion to reduce branching
+- [x] Releases & CI
+  - [x] Add root `.gitignore` to ignore `Library/`, `Temp/`, `Builds/`, etc.
 
 ## Pending / Next Up
 
@@ -61,7 +63,6 @@
   - [ ] Contribution guidelines in repo (CONTRIBUTING.md)
 - [ ] Releases & CI
   - [ ] Create a GitHub release (tag e.g., `v1.0.0`) and upload `Sudoku.apk` to Releases page (if not yet done)
-  - [ ] Add root `.gitignore` to ignore `Library/`, `Temp/`, `Builds/`, etc. (the previous `SudokuChallenge/.gitignore` was removed)
   - [ ] Optional: CI workflow to build and validate (e.g., GitHub Actions)
 - [ ] Testing
   - [ ] Unit tests for solver, puzzle validator, and hint logic
