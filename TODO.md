@@ -23,7 +23,7 @@
   - [x] Subtle animation: shake on error in `SudokuCell`
 - [x] UI & Controls
   - [x] Difficulty slider wired to `PlayerSettings`
-  - [x] Timer (count up)
+  - [x] Timer (count up) with TMP support in code
 - [x] Documentation
   - [x] README centered title + image
   - [x] README features, installation, credits (Developed by Michel Duek)
@@ -42,12 +42,12 @@
   - [x] Best times per difficulty (PlayerPrefs) and display on win screen
   - [x] Limit and track number of hints per game; display remaining hints in UI
 - [x] UX polish (partial)
-  - [x] Add TMP support in code (`SudokuCell` supports `TMP_Text` for main and pencil marks)
+  - [x] Add TMP support in code (`SudokuCell` and `TimerCountUp` support `TMP_Text`)
 
 ## Pending / Next Up
 
 - [ ] UX polish
-  - [ ] Migrate UI text to TextMeshPro for sharper rendering (update prefabs to assign `TMP_Text` fields)
+  - [ ] Migrate UI text to TextMeshPro for sharper rendering (update prefabs to assign `TMP_Text` fields in cells and timer)
 - [ ] Feature depth
   - [ ] Undo/redo stack for moves (values and pencil marks)
 - [ ] Android polish

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 /// <summary>
 /// TimerCountUp displays the elapsed time since the level load in a UI Text component.
@@ -11,22 +12,21 @@ public class TimerCountUp : MonoBehaviour
     // Exposed in the Inspector for easy assignment.
     [SerializeField, Tooltip("UI Text component that displays the timer.")]
     private Text timerText;
+    [SerializeField, Tooltip("TMP Text component that displays the timer (optional).")]
+    private TMP_Text timerTMP;
 
     /// <summary>
     /// Initialization: Attempts to get the Text component if not manually assigned.
     /// </summary>
     private void Start()
     {
-        // If timerText is not assigned in the Inspector, try to find one in the children.
-        if (timerText == null)
-        {
-            timerText = GetComponentInChildren<Text>();
-        }
+        // Try to find Text/TMP_Text if not assigned
+        if (timerText == null) timerText = GetComponentInChildren<Text>();
+        if (timerTMP == null) timerTMP = GetComponentInChildren<TMP_Text>();
 
-        // Check if the timerText was successfully assigned.
-        if (timerText == null)
+        if (timerText == null && timerTMP == null)
         {
-            Debug.LogError("TimerCountUp: No Text component found! Please assign one in the Inspector.");
+            Debug.LogError("TimerCountUp: No Text or TMP_Text component found! Please assign one in the Inspector.");
         }
     }
 
@@ -36,8 +36,8 @@ public class TimerCountUp : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        // If timerText is not set, exit early.
-        if (timerText == null)
+        // If neither text is set, exit early.
+        if (timerText == null && timerTMP == null)
         {
             return;
         }
@@ -50,6 +50,8 @@ public class TimerCountUp : MonoBehaviour
         int minutes = (int)(t / 60);
 
         // Update the timer text in MM:SS format.
-        timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+        string formatted = string.Format("{0:00}:{1:00}", minutes, seconds);
+        if (timerText != null) timerText.text = formatted;
+        if (timerTMP != null) timerTMP.text = formatted;
     }
 }
